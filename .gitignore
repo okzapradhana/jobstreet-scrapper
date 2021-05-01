@@ -3,6 +3,7 @@ logs/
 chromedriver_linux64/
 chromedriver_linux64.zip
 jobstreet_scrap_result.csv
+credentials/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,11 +1,19 @@
 import pandas as pd
+import pandas_gbq
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from config import BASE_URL, CHROMEDRIVER_PATH, KEYWORDS, SIBLING_PARENT_XPATH, LOG_DIR, LOG_INFO_PATH, LOG_INFO_FILEMODE
+from google.cloud import bigquery
+from config import BASE_URL, CHROMEDRIVER_PATH, KEYWORDS, SIBLING_PARENT_XPATH, LOG_DIR, LOG_INFO_PATH, LOG_INFO_FILEMODE, BIGQUERY_TABLE_NAME
 from helpers import time_difference_fmt
+
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_PATH')
 
 from selenium.webdriver.chrome.options import Options
 options = Options()
@@ -22,6 +30,7 @@ class JobScrapper(object):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.driver = webdriver.Chrome(chrome_options=options, executable_path=CHROMEDRIVER_PATH)
+        self.client = bigquery.Client(project=os.getenv('PROJECT_ID'))
         self.list_company_name = []
         self.list_job_posting_time = []
         self.list_career_level = []
@@ -78,23 +87,23 @@ class JobScrapper(object):
                         )
                         
                         self.scrap_jobs_data()
-                        print('='*15)
-        
+        self.logger.info('Scrapping process Done!')
+
         #Put together to Pandas Dataframe then Store to BigQuery
         df = pd.DataFrame(
             {
-                'Company Name': self.list_company_name,
-                'Job Posting Time': self.list_job_posting_time,
-                'Career Level': self.list_career_level,
-                'Size of Company': self.list_company_size,
-                'Company Industry': self.list_company_industry,
-                'Detail Description': self.list_company_description,
-                'Employment Type': self.list_employment_type,
-                'Job Function': self.list_job_function
+                'company_name': self.list_company_name,
+                'job_posting_time': self.list_job_posting_time,
+                'career_level': self.list_career_level,
+                'size_of_company': self.list_company_size,
+                'company_industry': self.list_company_industry,
+                'detail_description': self.list_company_description,
+                'employment_type': self.list_employment_type,
+                'job_function': self.list_job_function
             }
         )
 
-        df.to_csv('jobstreet_scrap_result.csv', index=False)
+        self.store_to_bigquery(df)
 
     def scrap_jobs_data(self):
         WebDriverWait(self.driver, 10).until(
@@ -103,13 +112,11 @@ class JobScrapper(object):
 
         company_name_element = self.driver.find_element(By.XPATH, "//div[@data-automation='detailsTitle']//span")
         company_name_text = company_name_element.text
-        self.logger.info(company_name_text)
         self.list_company_name.append(company_name_text)
         print(company_name_text)
 
         company_description_element = self.driver.find_element(By.XPATH, "//div[@data-automation='jobDescription']")
         company_description_text = company_description_element.text
-        self.logger.info(company_description_text)
         
         job_highlight_text = self.get_additional_information(
             selector_to_check="//div[@data-automation='job-details-job-highlights']", 
@@ -180,6 +187,13 @@ class JobScrapper(object):
             information_text = f'No {text}'
         
         return information_text
-    
-    def store_to_bigquery(self):
-        pass
+
+    def store_to_bigquery(self, df):
+        self.logger.info('Writing to BigQuery...')
+        dataset_id = os.getenv('DATASET_ID')
+        project_id = os.getenv('PROJECT_ID')
+        pandas_gbq.to_gbq(
+            df, f"{dataset_id}.{BIGQUERY_TABLE_NAME}", 
+            project_id=project_id, if_exists="replace"
+        )
+        self.logger.info('SUCCESS writing to BigQuery')
