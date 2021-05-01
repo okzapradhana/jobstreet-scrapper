@@ -12,7 +12,6 @@ pytz = "*"
 pandas = "*"
 python-dotenv = "*"
 pandas-gbq = "*"
-google-cloud-bigquery = "*"
 
 [dev-packages]
 

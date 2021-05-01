@@ -1,19 +1,16 @@
 import pandas as pd
+import os
 import pandas_gbq
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from google.cloud import bigquery
 from config import BASE_URL, CHROMEDRIVER_PATH, KEYWORDS, SIBLING_PARENT_XPATH, LOG_DIR, LOG_INFO_PATH, LOG_INFO_FILEMODE, BIGQUERY_TABLE_NAME
 from helpers import time_difference_fmt
 
 from dotenv import load_dotenv
 load_dotenv()
-
-import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_PATH')
 
 from selenium.webdriver.chrome.options import Options
 options = Options()
@@ -30,7 +27,6 @@ class JobScrapper(object):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.driver = webdriver.Chrome(chrome_options=options, executable_path=CHROMEDRIVER_PATH)
-        self.client = bigquery.Client(project=os.getenv('PROJECT_ID'))
         self.list_company_name = []
         self.list_job_posting_time = []
         self.list_career_level = []
