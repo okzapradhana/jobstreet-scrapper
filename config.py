@@ -12,3 +12,6 @@ KEYWORDS = [
     # 'Business Intelligence Analyst'
 ]
 SIBLING_PARENT_XPATH = "../following-sibling::div/span"
+LOG_DIR = "./logs"
+LOG_INFO_PATH = f"{LOG_DIR}/jobscrap.log"
+LOG_INFO_FILEMODE = 'w'

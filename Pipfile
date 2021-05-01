@@ -9,6 +9,7 @@ autopep8 = "*"
 timeago = "*"
 python-dateutil = "*"
 pytz = "*"
+pandas = "*"
 
 [dev-packages]
 
