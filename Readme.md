@@ -39,10 +39,16 @@ This program will automatically produce two files after you run it:
 1. The **logs** will be stored at `/logs` . Thus you don't need to create the folder manually
 2. The **CSV** file will be stored at the same dir named `jobstreet_scrap_result.csv`. If you insist on check the CSV file you may open these file
 
+## Data Visualization (Dashboard)
+I used Data Studio to visualize the Data which stored on BigQuery earlier. <br>
+If this embedded visualization doesn't show to your screen,
+kindly check my visualization on: https://datastudio.google.com/reporting/29fdd73e-8edb-4540-ab0c-162f1b93eb2c
+
+<iframe width="600" height="132" src="https://datastudio.google.com/embed/reporting/29fdd73e-8edb-4540-ab0c-162f1b93eb2c/page/DHfGC" frameborder="0" style="border:0" allowfullscreen></iframe>
+
 ### **Note**
 - If you got a `TimeoutException` or another `Exception` Error in the middle of scrapping process. Please just re-run `python main.py`. <br>
 I'am sorry for not handling that *rare* case in this version yet. <br> But the thing is, those issues weren't cause of incompatibility either Python version or Chromedriver version.
 Thus don't be afraid. I've tested on local and it works perfectly. Thanks!
 - If you wish to only scrap some keywords for the sake of faster scrapping time. Just edit the `config.py` and comment some keywords that you want to exclude.
 - At the end of scrapping process, Google OAuth2 will ask for authorization by sending this message: `Please visit this URL to authorize this application:` followed by the URL. <br>Just visit or click the URL to authorize the scrap application and gives BigQuery access to write the file
-

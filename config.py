@@ -3,11 +3,11 @@ CHROMEDRIVER_PATH = './chromedriver_linux64/chromedriver'
 TIMEZONE = 'Asia/Jakarta'
 KEYWORDS = [
     'Senior Data Engineer',
-    # 'Data Engineer',
+    'Data Engineer',
     'Senior Data Scientist',
-    # 'Data Scientist',
+    'Data Scientist',
     'Senior Data Analyst',
-    # 'Data Analyst',
+    'Data Analyst',
     'Senior Business Intelligence',
     'Business Intelligence Analyst'
 ]

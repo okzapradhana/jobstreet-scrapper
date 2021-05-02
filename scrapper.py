@@ -37,8 +37,6 @@ class JobScrapper(object):
         self.list_job_function = []
 
     def begin_scrap(self):
-        print(self.driver.get_window_size())
-
         for keyword in KEYWORDS:
             self.driver.get(BASE_URL)
             WebDriverWait(self.driver, 10).until(
