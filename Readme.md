@@ -13,9 +13,10 @@ Please refer to [Note](#note) if you're facing some issues or want to do other t
 1. Install `pipenv` first by executing `pip install pipenv` . Ensure that you already have `pip` on your machine
 2. Run `pipenv shell` to create a virtual environment if doesn't exist yet
 3. Install the dependecies by executing `pipenv install` command on the same directory where `Pipfile.lock` located
-4. Fill `PROJECT_ID` on your `.env` file based on your Google Cloud Platform (GCP) account
-5. Then fill `DATASET_ID` on your `.env` file regarding to what dataset name you want. e.g `blankspace-jobstreet`
-6. Setup done! Please go straight to [here](#how-to-use-this-tool-after-doing-setup)
+4. Create `.env` file at the root directory of this project/repo
+5. Fill `PROJECT_ID` on your `.env` file based on your Google Cloud Platform (GCP) account
+6. Then fill `DATASET_ID` on your `.env` file regarding to what dataset name you want. e.g `blankspace-jobstreet`
+7. Setup done! Please go straight to [here](#how-to-use-this-tool-after-doing-setup)
 ## How to Use this Tool After Doing Setup?
 Simply run `python main.py` to scrap the data
 
