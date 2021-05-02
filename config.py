@@ -4,12 +4,12 @@ TIMEZONE = 'Asia/Jakarta'
 KEYWORDS = [
     'Senior Data Engineer',
     # 'Data Engineer',
-    # 'Senior Data Scientist',
+    'Senior Data Scientist',
     # 'Data Scientist',
-    # 'Senior Data Analyst',
+    'Senior Data Analyst',
     # 'Data Analyst',
-    # 'Senior Business Intelligence',
-    # 'Business Intelligence Analyst'
+    'Senior Business Intelligence',
+    'Business Intelligence Analyst'
 ]
 SIBLING_PARENT_XPATH = "../following-sibling::div/span"
 LOG_DIR = "./logs"

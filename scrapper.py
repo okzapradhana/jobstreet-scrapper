@@ -36,7 +36,7 @@ class JobScrapper(object):
         self.list_employment_type = []
         self.list_job_function = []
 
-    def visit_job_search(self):
+    def begin_scrap(self):
         print(self.driver.get_window_size())
 
         for keyword in KEYWORDS:
@@ -98,7 +98,8 @@ class JobScrapper(object):
                 'job_function': self.list_job_function
             }
         )
-
+        
+        df.to_csv('jobstreet_scrap_result.csv', index=False)
         self.store_to_bigquery(df)
 
     def scrap_jobs_data(self):
@@ -109,7 +110,7 @@ class JobScrapper(object):
         company_name_element = self.driver.find_element(By.XPATH, "//div[@data-automation='detailsTitle']//span")
         company_name_text = company_name_element.text
         self.list_company_name.append(company_name_text)
-        print(company_name_text)
+        self.logger.info(f"Now scrap company name: {company_name_text}")
 
         company_description_element = self.driver.find_element(By.XPATH, "//div[@data-automation='jobDescription']")
         company_description_text = company_description_element.text
@@ -128,7 +129,6 @@ class JobScrapper(object):
         )
         final_description = f"{company_description_text}\n\n{job_highlight_text}\n\nBenefits & Others:\n{benefit_text}"
         self.list_company_description.append(final_description)
-        print(final_description)
             
         career_level_text = self.get_additional_information(
             selector_to_check="//span[text() = 'Career Level']",
